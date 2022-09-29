@@ -10,7 +10,7 @@ class ElementType(str, Enum):
     context = "context"
     divider = "divider"
     image = "image"
-    markdown = "mrkdown"
+    markdown = "mrkdwn"
     plain_text = "plain_text"
     section = "section"
 
@@ -47,7 +47,7 @@ class Button(Block):
 
 class Image(Block, Element):
     type: str = ElementType.image.value
-    alt_text: Optional[str] = None
+    alt_text: str = ""
     image_url: str
 
 
