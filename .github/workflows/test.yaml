@@ -7,7 +7,7 @@ on:
     branches:    
       - main
 jobs:
-  checks:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: 3.9
       - name: Set up poetry
-        run: pip instal poetry
+        run: pip install poetry
       - name: Cache dependencies
         uses: actions/cache@v1
         id: poetry
