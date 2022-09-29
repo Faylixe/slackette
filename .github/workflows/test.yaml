@@ -24,6 +24,8 @@ jobs:
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Setup poetry
+        run: poetry config virtualenvs.in-project true
       - name: Install dependencies
         run: poetry install
       - name: Run black
