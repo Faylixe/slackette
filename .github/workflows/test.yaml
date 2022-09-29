@@ -1,0 +1,34 @@
+name: test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:    
+      - main
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        id: poetry
+        with:
+          path: ~/.cache/pip
+          key: poetry-${{ hashFiles('poetry.lock') }}
+          restore-keys: |
+            poetry-
+      - name: Install dependencies
+        run: poetry install
+      - name: Install dependencies
+        if: steps.poetry.outputs.cache-hit != 'true'
+      - name: Code quality checks
+        run: |
+          poetry run black slackette tests --check
+          poetry run isort slackette tests --check
+          poetry run mypy --strict slackette tests

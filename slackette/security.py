@@ -56,18 +56,14 @@ def SlackRequest(
     """
     def wrapper(endpoint: Endpoint) -> Endpoint:
         def middleware(protocol: HeadersProtocol) -> Any:
-            try:
-                expected = protocol.headers.get(SlackHeaders.X_SLACK_SIGNATURE)
-                actual = compute_slack_signature(
-                    protocol,
-                    signing_secret,
-                    version,
-                )
-                if actual != expected:
-                    raise InvalidSignatureError()
-                return endpoint(protocol)
-            except Exception as e:
-                # TODO: log
-                pass
+            expected = protocol.headers.get(SlackHeaders.X_SLACK_SIGNATURE)
+            actual = compute_slack_signature(
+                protocol,
+                signing_secret,
+                version,
+            )
+            if actual != expected:
+                raise InvalidSignatureError()
+            return endpoint(protocol)
         return middleware
     return wrapper
