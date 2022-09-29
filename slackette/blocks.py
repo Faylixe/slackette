@@ -32,6 +32,10 @@ class Element(BaseModel):
     pass
 
 
+class Divider(Block):
+    type: str = ElementType.divider.value
+
+
 class PlainText(Block):
     type: str = ElementType.plain_text.value
     emoji: bool = True
