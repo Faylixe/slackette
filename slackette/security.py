@@ -9,7 +9,7 @@ class SlackHeaders(object):
 
 
 class HeadersProtocol(Protocol):
-    """ A headers provider interface for duck typing. """
+    """A headers provider interface for duck typing."""
 
     @property
     def headers(self) -> Mapping[str, Any]:
@@ -17,6 +17,7 @@ class HeadersProtocol(Protocol):
 
     def body(self) -> str:
         ...
+
 
 Response = TypeVar("Response")
 Endpoint = Callable[[HeadersProtocol], Response]
@@ -31,8 +32,7 @@ def compute_slack_signature(
     signing_secret: str,
     version: str,
 ) -> str:
-    """
-    """
+    """ """
     timestamp = protocol.headers.get(SlackHeaders.X_SLACK_REQUEST_TIMESTAMP)
     body = protocol.body()
     message = f"{version}:{timestamp}:{body}"
@@ -54,6 +54,7 @@ def SlackRequest(
 
     See https://api.slack.com/authentication/verifying-requests-from-slack
     """
+
     def wrapper(endpoint: Endpoint) -> Endpoint:
         def middleware(protocol: HeadersProtocol) -> Any:
             expected = protocol.headers.get(SlackHeaders.X_SLACK_SIGNATURE)
@@ -65,5 +66,7 @@ def SlackRequest(
             if actual != expected:
                 raise InvalidSignatureError()
             return endpoint(protocol)
+
         return middleware
+
     return wrapper
