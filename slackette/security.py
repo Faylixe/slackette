@@ -2,7 +2,7 @@ from hashlib import sha256
 from hmac import new as hmac
 from typing import Any, Callable
 
-from .types import Endpoint, HeadersProtocol
+from .types import Endpoint, RequestProtocol
 
 
 class SlackHeaders(object):
@@ -15,13 +15,13 @@ class InvalidSignatureError(ValueError):
 
 
 def compute_slack_signature(
-    protocol: HeadersProtocol,
+    request: RequestProtocol,
     signing_secret: str,
     version: str,
 ) -> str:
-    """ """
-    timestamp = protocol.headers.get(SlackHeaders.X_SLACK_REQUEST_TIMESTAMP)
-    body = protocol.body()
+    """ Compute a Slack signature from the given request. """
+    timestamp = request.headers.get(SlackHeaders.X_SLACK_REQUEST_TIMESTAMP)
+    body = request.body()
     message = f"{version}:{timestamp}:{body}"
     signature = hmac(
         bytes(signing_secret, "latin-1"),
@@ -31,7 +31,7 @@ def compute_slack_signature(
     return signature.hexdigest()
 
 
-def SlackRequest(
+def SignedSlackRoute(
     signing_secret: str,
     version: str = "v0",
 ) -> Callable[[Endpoint], Endpoint]:
@@ -43,16 +43,16 @@ def SlackRequest(
     """
 
     def wrapper(endpoint: Endpoint) -> Endpoint:
-        def middleware(protocol: HeadersProtocol) -> Any:
-            expected = protocol.headers.get(SlackHeaders.X_SLACK_SIGNATURE)
+        def middleware(request: RequestProtocol) -> Any:
+            expected = request.headers.get(SlackHeaders.X_SLACK_SIGNATURE)
             actual = compute_slack_signature(
-                protocol,
+                request,
                 signing_secret,
                 version,
             )
             if actual != expected:
                 raise InvalidSignatureError()
-            return endpoint(protocol)
+            return endpoint(request)
 
         return middleware
 

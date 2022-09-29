@@ -39,7 +39,7 @@ settings = Settings()
 api = FastAPI()
 
 @api.post("/slack")
-@SlackRequest(signing_secret=settings.SLACK_SIGNING_SECRET)
+@SignedSlackRoute(signing_secret=settings.SLACK_SIGNING_SECRET)
 def on_interactive_event(request: Request) -> None:
     ...
 ```

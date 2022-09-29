@@ -3,7 +3,7 @@ from typing import Any, Callable, Coroutine, Mapping, Protocol
 from .blocks import Blocks
 
 
-class HeadersProtocol(Protocol):
+class RequestProtocol(Protocol):
     """A headers provider interface for duck typing."""
 
     @property
@@ -14,7 +14,7 @@ class HeadersProtocol(Protocol):
         ...
 
 
-Endpoint = Callable[[HeadersProtocol], Any]
+Endpoint = Callable[[RequestProtocol], Any]
 
 AsyncWebhook = Callable[[Blocks], Coroutine[Any, Any, None]]
 Webhook = Callable[[Blocks], None]
