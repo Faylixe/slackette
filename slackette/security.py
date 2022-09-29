@@ -19,7 +19,7 @@ def compute_slack_signature(
     signing_secret: str,
     version: str,
 ) -> str:
-    """ Compute a Slack signature from the given request. """
+    """Compute a Slack signature from the given request."""
     timestamp = request.headers.get(SlackHeaders.X_SLACK_REQUEST_TIMESTAMP)
     body = request.body()
     message = f"{version}:{timestamp}:{body}"
