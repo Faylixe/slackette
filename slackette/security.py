@@ -1,8 +1,8 @@
 from hashlib import sha256
 from hmac import new as hmac
-from typing import Any, Callable
+from typing import Any, Callable, Union
 
-from .types import Endpoint, RequestProtocol
+from .types import Endpoint, RequestProtocol, StringProvider
 
 
 class SlackHeaders(object):
@@ -32,7 +32,7 @@ def compute_slack_signature(
 
 
 def SignedSlackRoute(
-    signing_secret: str,
+    signing_secret: Union[str, StringProvider],
     version: str = "v0",
 ) -> Callable[[Endpoint], Endpoint]:
     """
@@ -44,6 +44,8 @@ def SignedSlackRoute(
 
     def wrapper(endpoint: Endpoint) -> Endpoint:
         def middleware(request: RequestProtocol) -> Any:
+            if not isinstance(signing_secret, str):
+                signing_secret = signing_secret()
             expected = request.headers.get(SlackHeaders.X_SLACK_SIGNATURE)
             actual = compute_slack_signature(
                 request,

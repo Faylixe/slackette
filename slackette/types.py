@@ -18,3 +18,5 @@ Endpoint = Callable[[RequestProtocol], Any]
 
 AsyncWebhook = Callable[[Blocks], Coroutine[Any, Any, None]]
 Webhook = Callable[[Blocks], None]
+
+StringProvider = Callable[..., str]
