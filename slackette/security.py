@@ -1,25 +1,13 @@
 from hashlib import sha256
 from hmac import new as hmac
-from typing import Any, Callable, Mapping, Protocol, TypeVar
+from typing import Any, Callable
+
+from .types import Endpoint, HeadersProtocol
 
 
 class SlackHeaders(object):
     X_SLACK_SIGNATURE = "X-Slack-Signature"
     X_SLACK_REQUEST_TIMESTAMP = "X-Slack-Request-Timestamp"
-
-
-class HeadersProtocol(Protocol):
-    """A headers provider interface for duck typing."""
-
-    @property
-    def headers(self) -> Mapping[str, Any]:
-        ...
-
-    def body(self) -> str:
-        ...
-
-
-Endpoint = Callable[[HeadersProtocol], Any]
 
 
 class InvalidSignatureError(ValueError):
