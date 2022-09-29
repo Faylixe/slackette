@@ -5,6 +5,7 @@ from pydantic import AnyHttpUrl, BaseModel
 
 
 class ElementType(str, Enum):
+    actions = "actions"
     button = "button"
     context = "context"
     divider = "divider"
@@ -67,5 +68,5 @@ class Section(Block):
 
 
 class Actions(Block):
-    type: str = "actions"
+    type: ElementType = ElementType.actions
     elements: List[Button]
