@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import AnyHttpUrl, BaseModel
+from pydantic import BaseModel
 
 
 class ElementType(str, Enum):
@@ -21,7 +21,7 @@ class Style(str, Enum):
 
 
 class Block(BaseModel):
-    type: ElementType
+    type: str
 
 
 class Blocks(BaseModel):
@@ -33,40 +33,40 @@ class Element(BaseModel):
 
 
 class PlainText(Block):
-    type: ElementType = ElementType.plain_text
+    type: str = ElementType.plain_text.value
     emoji: bool = True
     text: str
 
 
 class Button(Block):
-    type: ElementType = ElementType.button
-    style: Style = Style.primary
+    type: str = ElementType.button.value
+    style: str = Style.primary.value
     text: PlainText
     value: str
 
 
 class Image(Block, Element):
-    type: ElementType = ElementType.image
+    type: str = ElementType.image.value
     alt_text: Optional[str] = None
-    image_url: AnyHttpUrl
+    image_url: str
 
 
 class Markdown(Block, Element):
-    type: ElementType = ElementType.markdown
+    type: str = ElementType.markdown.value
     text: str
 
 
 class Context(Block):
-    type: ElementType = ElementType.context
+    type: str = ElementType.context.value
     elements: List[Element]
 
 
 class Section(Block):
-    type: ElementType = ElementType.section
+    type: str = ElementType.section.value
     text: Markdown
     accessory: Optional[Image] = None
 
 
 class Actions(Block):
-    type: ElementType = ElementType.actions
+    type: str = ElementType.actions.value
     elements: List[Button]
