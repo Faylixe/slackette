@@ -19,8 +19,7 @@ class HeadersProtocol(Protocol):
         ...
 
 
-Response = TypeVar("Response")
-Endpoint = Callable[[HeadersProtocol], Response]
+Endpoint = Callable[[HeadersProtocol], Any]
 
 
 class InvalidSignatureError(ValueError):
@@ -37,8 +36,8 @@ def compute_slack_signature(
     body = protocol.body()
     message = f"{version}:{timestamp}:{body}"
     signature = hmac(
-        bytes(signing_secret),
-        msg=bytes(message),
+        bytes(signing_secret, "latin-1"),
+        msg=bytes(message, "latin-1"),
         digestmod=sha256,
     )
     return signature.hexdigest()
