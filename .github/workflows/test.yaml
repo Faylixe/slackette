@@ -1,4 +1,4 @@
-name: test
+name: Test
 on:
   push:
     branches:
@@ -7,29 +7,32 @@ on:
     branches:    
       - main
 jobs:
-  test:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.9
-        uses: actions/setup-python@v2
+      - uses: actions/setup-python@v2
         with:
           python-version: 3.9
+          cache: 'pip'
       - name: Set up poetry
         run: pip install poetry
-      - name: Cache dependencies
-        uses: actions/cache@v1
+      - name: Cache poetry
         id: poetry
+        uses: actions/cache@v2
         with:
-          path: ~/.cache/pip
-          key: poetry-${{ hashFiles('poetry.lock') }}
-          restore-keys: |
-            poetry-
+          path: .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
       - name: Install dependencies
         run: poetry install
         if: steps.poetry.outputs.cache-hit != 'true'
-      - name: Code quality checks
+      - name: Run black
         run: |
           poetry run black slackette tests --check
+      - name: Run isort
+        run: |
           poetry run isort slackette tests --check
+      - name: Run mypy
+        run: |
           poetry run mypy --strict slackette tests
