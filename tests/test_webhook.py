@@ -1,4 +1,4 @@
-from slackette import AsyncSlackWebhook, Webhook
+from slackette import AsyncSlackWebhook, SlackWebhook
 
 
 def test_slack_webhook() -> None:
