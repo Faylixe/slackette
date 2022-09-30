@@ -22,7 +22,7 @@ def compute_slack_signature(
 ) -> str:
     """Compute a Slack signature from the given request."""
     timestamp = request.headers.get(SlackHeaders.X_SLACK_REQUEST_TIMESTAMP)
-    body = request.body()
+    body = request.get_data(as_text=True)
     message = f"{version}:{timestamp}:{body}"
     signature = hmac(
         bytes(signing_secret, "latin-1"),

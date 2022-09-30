@@ -10,7 +10,7 @@ class RequestProtocol(Protocol):
     def headers(self) -> Mapping[str, Any]:
         ...
 
-    def body(self) -> str:
+    def get_data(self, as_text: bool = True) -> str:
         ...
 
 
