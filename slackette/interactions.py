@@ -17,6 +17,10 @@ class BlockInteraction(BaseModel):
     response_url: str
 
 
-class InteractionResponse(BaseModel):
+class InteractionDeleteResponse(BaseModel):
+    delete_original: bool = True
+
+
+class InteractionReplaceResponse(BaseModel):
     replace_original: bool = True
     text: str

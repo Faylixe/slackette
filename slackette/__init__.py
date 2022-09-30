@@ -11,7 +11,12 @@ from .blocks import (
     Section,
     Style,
 )
-from .interactions import BlockAction, BlockInteraction, InteractionResponse
+from .interactions import (
+    BlockAction,
+    BlockInteraction,
+    InteractionDeleteResponse,
+    InteractionReplaceResponse,
+)
 from .security import compute_slack_signature, verify_slack_signature
 from .webhook import AsyncSlackWebhook, SlackWebhook
 
@@ -26,7 +31,8 @@ __all__ = [
     "Context",
     "Divider",
     "Image",
-    "InteractionResponse",
+    "InteractionDeleteResponse",
+    "InteractionReplaceResponse",
     "Markdown",
     "PlainText",
     "Section",
