@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "slackette"
-version = "0.1.9"
+version = "0.1.10"
 description = "Small toolkit to build Slack applications"
 authors = ["Félix Voituret <fvoituret@deezer.com>"]
 
