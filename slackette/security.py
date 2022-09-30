@@ -29,7 +29,7 @@ def compute_slack_signature(
     timestamp = request.headers.get(SlackHeaders.X_SLACK_REQUEST_TIMESTAMP)
     if abs(time() - float(cast(int, timestamp))) > 60 * 5:
         raise ExpiredTimestampError()
-    body = request.get_data()
+    body = request.get_data().decode("utf-8")
     message = f"{version}:{timestamp}:{body}"
     signature = hmac(
         signing_secret.encode("utf-8"),
@@ -39,7 +39,7 @@ def compute_slack_signature(
     return f"{version}={signature.hexdigest()}"
 
 
-def SignedSlackRoute(
+def verify_slack_signature(
     signing_secret: Union[str, StringProvider],
     version: str = "v0",
 ) -> Callable[[Endpoint], Endpoint]:
@@ -63,8 +63,6 @@ def SignedSlackRoute(
                 secret,
                 version,
             )
-            print(f"slackette.security: Received signature {expected}")
-            print(f"slackette.security: Generated signature {actual}")
             if actual != expected:
                 raise InvalidSignatureError()
             return endpoint(request)

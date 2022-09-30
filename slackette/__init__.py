@@ -11,7 +11,7 @@ from .blocks import (
     Section,
     Style,
 )
-from .security import SignedSlackRoute, compute_slack_signature
+from .security import compute_slack_signature, verify_slack_signature
 from .webhook import AsyncSlackWebhook, SlackWebhook
 
 __all__ = [
@@ -26,8 +26,8 @@ __all__ = [
     "Markdown",
     "PlainText",
     "Section",
-    "SignedSlackRoute",
     "SlackWebhook",
     "Style",
     "compute_slack_signature",
+    "verify_slack_signature",
 ]
