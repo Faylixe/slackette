@@ -1,3 +1,4 @@
+from functools import wraps
 from hashlib import sha256
 from hmac import new as hmac
 from typing import Any, Callable, Union
@@ -43,13 +44,16 @@ def SignedSlackRoute(
     """
 
     def wrapper(endpoint: Endpoint) -> Endpoint:
+        @wraps(endpoint)
         def middleware(request: RequestProtocol) -> Any:
-            if not isinstance(signing_secret, str):
-                signing_secret = signing_secret()
+            if isinstance(signing_secret, str):
+                secret = signing_secret
+            else:
+                secret = signing_secret()
             expected = request.headers.get(SlackHeaders.X_SLACK_SIGNATURE)
             actual = compute_slack_signature(
                 request,
-                signing_secret,
+                secret,
                 version,
             )
             if actual != expected:
