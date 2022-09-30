@@ -30,7 +30,7 @@ def compute_slack_signature(
         int,
         request.headers.get(SlackHeaders.X_SLACK_REQUEST_TIMESTAMP),
     )
-    if abs(time() - timestamp) > 60 * 5:
+    if abs(time() - float(timestamp)) > 60 * 5:
         raise ExpiredTimestampError()
     body = request.get_data(as_text=True)
     message = f"{version}:{timestamp}:{body}"
