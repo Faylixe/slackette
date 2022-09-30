@@ -11,6 +11,7 @@ from .blocks import (
     Section,
     Style,
 )
+from .interactions import BlockAction, BlockInteraction
 from .security import compute_slack_signature, verify_slack_signature
 from .webhook import AsyncSlackWebhook, SlackWebhook
 
@@ -18,6 +19,8 @@ __all__ = [
     "Actions",
     "AsyncSlackWebhook",
     "Block",
+    "BlockAction",
+    "BlockInteraction",
     "Blocks",
     "Button",
     "Context",
