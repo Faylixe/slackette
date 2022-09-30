@@ -8,8 +8,8 @@ from .types import Endpoint, RequestProtocol, StringProvider
 
 
 class SlackHeaders(object):
-    X_SLACK_SIGNATURE = "x-slack-signature"
-    X_SLACK_REQUEST_TIMESTAMP = "x-slack-request-timestamp"
+    X_SLACK_SIGNATURE = "X-Slack-Signature"
+    X_SLACK_REQUEST_TIMESTAMP = "X-Slack-Request-Timestamp"
 
 
 class InvalidSignatureError(ValueError):
@@ -63,6 +63,8 @@ def SignedSlackRoute(
                 secret,
                 version,
             )
+            print(f"slackette.security: Received signature {expected}")
+            print(f"slackette.security: Generated signature {actual}")
             if actual != expected:
                 raise InvalidSignatureError()
             return endpoint(request)
