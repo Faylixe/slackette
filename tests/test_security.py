@@ -1,4 +1,4 @@
-from slackette import SignedSlackRoute, compute_slack_signature
+from slackette import compute_slack_signature, verify_slack_signature
 
 
 def test_compute_slack_signature() -> None:
