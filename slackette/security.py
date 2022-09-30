@@ -26,13 +26,10 @@ def compute_slack_signature(
     version: str,
 ) -> str:
     """Compute a Slack signature from the given request."""
-    timestamp = cast(
-        int,
-        request.headers.get(SlackHeaders.X_SLACK_REQUEST_TIMESTAMP),
-    )
-    if abs(time() - float(timestamp)) > 60 * 5:
+    timestamp = request.headers.get(SlackHeaders.X_SLACK_REQUEST_TIMESTAMP)
+    if abs(time() - float(cast(int, timestamp))) > 60 * 5:
         raise ExpiredTimestampError()
-    body = request.get_data(as_text=True)
+    body = request.get_data()
     message = f"{version}:{timestamp}:{body}"
     signature = hmac(
         bytes(signing_secret, "utf-8"),
