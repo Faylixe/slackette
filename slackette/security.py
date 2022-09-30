@@ -32,11 +32,11 @@ def compute_slack_signature(
     body = request.get_data()
     message = f"{version}:{timestamp}:{body}"
     signature = hmac(
-        bytes(signing_secret, "utf-8"),
-        msg=bytes(message, "utf-8"),
+        signing_secret.encode("utf-8"),
+        msg=message.encode("utf-8"),
         digestmod=sha256,
     )
-    return signature.hexdigest()
+    return f"{version}={signature.hexdigest()}"
 
 
 def SignedSlackRoute(
