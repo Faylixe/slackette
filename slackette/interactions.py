@@ -15,3 +15,8 @@ class BlockInteraction(BaseModel):
     type: str
     actions: List[BlockAction]
     response_url: str
+
+
+class InteractionResponse(BaseModel):
+    replace_original: bool = True
+    text: str
