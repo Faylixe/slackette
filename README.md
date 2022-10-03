@@ -21,6 +21,9 @@ webhook(
         ]
     )
 )
+
+# Or simply
+webhook(MarkdownBlocks(":warning: i am a lazy dude"))
 ```
 
 ### Implement a interactive callback with FastAPI
@@ -39,7 +42,7 @@ settings = Settings()
 api = FastAPI()
 
 @api.post("/slack")
-@SignedSlackRoute(signing_secret=settings.SLACK_SIGNING_SECRET)
+@verify_slack_signature(signing_secret=settings.SLACK_SIGNING_SECRET)
 def on_interactive_event(request: Request) -> None:
     ...
 ```
