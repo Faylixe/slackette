@@ -74,3 +74,15 @@ class Section(Block):
 class Actions(Block):
     type: str = ElementType.actions.value
     elements: List[Button]
+
+
+def MarkdownBlocks(text: str) -> Blocks:
+    return Blocks(
+        blocks=[
+            Section(
+                text=Markdown(
+                    text=text,
+                )
+            )
+        ]
+    )
